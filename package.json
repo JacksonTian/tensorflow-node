@@ -1,14 +1,13 @@
 {
   "name": "tensorflow-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "tensorflow node binding",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp rebuild"
+    "test": "make test"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "gypfile": true,
   "devDependencies": {
     "expect.js": "^0.3.1",
