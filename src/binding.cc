@@ -1,5 +1,6 @@
 // hello.cc
 #include <node.h>
+#include <node_api.h>
 #include <tensorflow/c/c_api.h>
 
 #include "status.h"
@@ -22,6 +23,14 @@ using v8::Value;
 void Version(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
   args.GetReturnValue().Set(String::NewFromUtf8(isolate, TF_Version()));
+}
+
+napi_value Version(napi_env env, napi_callback_info info) {
+  napi_value output;
+  const char* version = TF_Version();
+  napi_create_string_utf8(env, version, strlen(version), &output);
+
+  return output;
 }
 
 void FinishOperation(const FunctionCallbackInfo<Value>& args) {
@@ -84,18 +93,29 @@ void InitStatusCode(Local<Object> exports) {
                obj);
 }
 
-void init(Local<Object> exports) {
-  NODE_SET_METHOD(exports, "version", Version);
-  NODE_SET_METHOD(exports, "finishOperation", FinishOperation);
+void Init(napi_env env, napi_value exports, napi_value module, void* priv) {
+  napi_status status;
 
-  InitDataType(exports);
+  napi_value fn;
+  status = napi_create_function(env, NULL, Version, NULL, &fn);
+  if (status != napi_ok) return;
 
-  InitStatusCode(exports);
-
-  Status::Init(exports);
-  Graph::Init(exports);
+  status = napi_set_named_property(env, exports, "version", fn);
+  if (status != napi_ok) return;
 }
 
-NODE_MODULE(addon, init)
+// void init(Local<Object> exports) {
+//   NODE_SET_METHOD(exports, "version", Version);
+//   NODE_SET_METHOD(exports, "finishOperation", FinishOperation);
+
+//   InitDataType(exports);
+
+//   InitStatusCode(exports);
+
+//   Status::Init(exports);
+//   Graph::Init(exports);
+// }
+
+NAPI_MODULE(addon, Init)
 
 }  // namespace tensorflow_node
