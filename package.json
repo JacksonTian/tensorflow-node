@@ -1,0 +1,21 @@
+{
+  "name": "tensorflow-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "author": "",
+  "license": "ISC",
+  "gypfile": true,
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.1"
+  },
+  "dependencies": {
+    "protobufjs": "^6.7.3"
+  }
+}
