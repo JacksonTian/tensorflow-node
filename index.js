@@ -1,7 +1,6 @@
 'use strict';
 
-const tf = require('./build/Release/binding.node');
-
+const tf = require('bindings')('binding.node');
 // const ops = require('./lib/ops');
 
 tf.placeholder = function (graph, status, name = 'feed') {
